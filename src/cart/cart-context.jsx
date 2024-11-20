@@ -37,11 +37,9 @@ export const CartProvider = ({ children }) => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   }
 
-  function getTotalPrice() {
-    return cartItems
-      .reduce((total, item) => total + item.quantity * item.price, 0)
-      .toFixed(2);
-  }
+  const totalPrice = cartItems
+    .reduce((total, item) => total + item.quantity * item.price, 0)
+    .toFixed(2);
 
   return (
     <CartContext.Provider
@@ -50,7 +48,7 @@ export const CartProvider = ({ children }) => {
         addItemToCart,
         removeItemFromCart,
         getTotalItems,
-        getTotalPrice,
+        totalPrice,
       }}
     >
       {children}

@@ -2,14 +2,22 @@ import { forwardRef, useImperativeHandle, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useCart } from "../cart/cart-context";
 
-const CartModal = forwardRef(function Modal({ title }, ref) {
+const CartModal = forwardRef(function CartModal(
+  { title,  onOpenCheckoutModal },
+  ref
+) {
   const dialog = useRef();
-  const { cartItems, addItemToCart, removeItemFromCart, getTotalPrice } =
-    useCart();
+  const { addItemToCart, removeItemFromCart, cartItems, totalPrice } = useCart();
 
   useImperativeHandle(ref, () => ({
     open: () => dialog.current.showModal(),
+    close: () => dialog.current.close(),
   }));
+
+  const handleCheckoutClick = () => {
+    onOpenCheckoutModal(); // Открытие окна оформления заказа
+    dialog.current.close(); // Закрытие окна корзины
+  };
 
   return createPortal(
     <dialog id="modal" className="modal" ref={dialog}>
@@ -32,12 +40,13 @@ const CartModal = forwardRef(function Modal({ title }, ref) {
               </li>
             ))}
           </ul>
-          <div className="cart-total">${getTotalPrice()}</div>
+          <div className="cart-total">${totalPrice}</div>
+          <button onClick={handleCheckoutClick}>Go to Checkout</button>{" "}
+          {/* Кнопка перехода в оформление заказа */}
         </div>
       )}
       <form method="dialog" id="modal-actions">
         <button>Close</button>
-        <button>Go to Checkout</button>
       </form>
     </dialog>,
     document.getElementById("modal")
