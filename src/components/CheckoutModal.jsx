@@ -4,45 +4,98 @@ import { useCart } from "../cart/cart-context";
 
 const CheckoutModal = forwardRef(function CheckoutModal({ title }, ref) {
   const dialog = useRef();
-  const { totalPrice } = useCart();
+  const { cartItems, totalPrice } = useCart();
 
   useImperativeHandle(ref, () => ({
     open: () => dialog.current.showModal(),
     close: () => dialog.current.close(),
   }));
 
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    const fd = new FormData(event.target);
+    const userData = Object.fromEntries(fd.entries());
+
+    // console.log(userData);
+
+    const orderData = {
+      order: {
+        customer: {
+          name: userData["full-name"],
+          email: userData["email"],
+          street: userData["street"],
+          postalCode: userData["postal-code"],
+          city: userData["city"],
+        },
+        items: cartItems,
+        totalPrice: totalPrice,
+        date: new Date().toISOString(),
+      },
+    };
+    
+
+    try {
+      const response = await fetch("http://localhost:3000/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (!response.ok) {
+        const errorDetail = await response.json();
+        console.error("Error details:", errorDetail);
+        throw new Error("Failed to submit order");
+      }
+
+      const result = await response.json();
+      console.log("Order submitted successfully:", result);
+      dialog.current.close(); // Close the modal after submitting
+    } catch (error) {
+      console.error("Error submitting order:", error);
+    }
+  }
+
   return createPortal(
     <dialog id="checkout-modal" className="modal" ref={dialog}>
-      <form>
+      <form onSubmit={handleSubmit}>
         <h2>{title}</h2>
         <p>Total Amount: ${totalPrice}</p>
         <div className="control">
-          <label>Full Name</label>
-          <input />
+          <label htmlFor="name">Full Name</label>
+          <input type="text" id="full-name" name="full-name" />
         </div>
         <div className="control">
-          <label>E-Mail Address</label>
-          <input />
+          <label htmlFor="email">E-Mail Address</label>
+          <input id="email" type="email" name="email" />
         </div>
         <div className="control">
-          <label>Street</label>
-          <input />
+          <label htmlFor="street">Street</label>
+          <input type="text" id="street" name="street" />
         </div>
         <div className="control-row">
           <div className="control">
-            <label>Postal Code</label>
-            <input />
+            <label htmlFor="postal-code">Postal Code</label>
+            <input type="text" id="postal-code" name="postal-code" />
           </div>
           <div className="control">
-            <label>City</label>
-            <input />
+            <label htmlFor="city">City</label>
+            <input type="text" id="city" name="city" />
           </div>
         </div>
-        <p>
-          <button type="button" onClick={() => dialog.current.close()}>
+        <p className="modal-actions">
+          <button
+            className="text-button"
+            type="button"
+            onClick={() => dialog.current.close()}
+          >
             Close
           </button>
-          <button type="submit">Submit Order</button>
+          <button className="button" type="submit">
+            Submit Order
+          </button>
         </p>
       </form>
     </dialog>,

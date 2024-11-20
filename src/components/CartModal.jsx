@@ -3,11 +3,12 @@ import { createPortal } from "react-dom";
 import { useCart } from "../cart/cart-context";
 
 const CartModal = forwardRef(function CartModal(
-  { title,  onOpenCheckoutModal },
+  { title, onOpenCheckoutModal },
   ref
 ) {
   const dialog = useRef();
-  const { addItemToCart, removeItemFromCart, cartItems, totalPrice } = useCart();
+  const { addItemToCart, removeItemFromCart, cartItems, totalPrice } =
+    useCart();
 
   useImperativeHandle(ref, () => ({
     open: () => dialog.current.showModal(),
@@ -41,12 +42,13 @@ const CartModal = forwardRef(function CartModal(
             ))}
           </ul>
           <div className="cart-total">${totalPrice}</div>
-          <button onClick={handleCheckoutClick}>Go to Checkout</button>{" "}
-          {/* Кнопка перехода в оформление заказа */}
         </div>
       )}
-      <form method="dialog" id="modal-actions">
-        <button>Close</button>
+      <form method="dialog" className="modal-actions">
+        <button className="text-button">Close</button>
+        <button className="button" onClick={handleCheckoutClick}>
+          Go to Checkout
+        </button>
       </form>
     </dialog>,
     document.getElementById("modal")

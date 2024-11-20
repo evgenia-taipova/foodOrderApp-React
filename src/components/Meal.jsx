@@ -7,8 +7,8 @@ export default function Meal({ meals }) {
     <section>
       <ul id="meals">
         {meals.map((meal) => (
-          <li key={meal.id}>
-            <article className="meal-item">
+          <li key={meal.id} className="meal-item">
+            <article >
               <img
                 src={`http://localhost:3000/${meal.image}`}
                 alt={meal.name}
@@ -18,7 +18,9 @@ export default function Meal({ meals }) {
               <p className="meal-item-description">{meal.description}</p>
 
               <p className="meal-item-actions">
-                <button onClick={() => addItemToCart(meal)}>Add to cart</button>
+                <button className="button" onClick={() => addItemToCart(meal)}>
+                  Add to cart
+                </button>
               </p>
             </article>
           </li>
