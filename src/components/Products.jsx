@@ -10,7 +10,7 @@ async function fetchAvailableMeals() {
   return resData;
 }
 
-export default function Products({ onAddToCart }) {
+export default function Products() {
   const [availableMeals, setAvailableMeals] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState();
@@ -37,6 +37,6 @@ export default function Products({ onAddToCart }) {
   if (error) {
     return <p>Error: {error}</p>;
   }
-  // console.log(availableMeals);
-  return <Meal meals={availableMeals} onAddToCart={onAddToCart} />;
+
+  return <Meal meals={availableMeals} />;
 }

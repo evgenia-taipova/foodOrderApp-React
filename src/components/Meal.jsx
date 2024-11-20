@@ -1,4 +1,8 @@
-export default function Meal({ meals, onAddToCart }) {
+import { useCart } from "../cart/cart-context";
+
+export default function Meal({ meals }) {
+  const { addItemToCart } = useCart(); // Получаем функцию addItemToCart из контекста корзины
+
   return (
     <section>
       <ul id="meals">
@@ -14,7 +18,7 @@ export default function Meal({ meals, onAddToCart }) {
               <p className="meal-item-description">{meal.description}</p>
 
               <p className="meal-item-actions">
-                <button onClick={() => onAddToCart(meal)}>Add to cart</button>
+                <button onClick={() => addItemToCart(meal)}>Add to cart</button>
               </p>
             </article>
           </li>
