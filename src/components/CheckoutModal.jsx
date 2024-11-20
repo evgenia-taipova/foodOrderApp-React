@@ -2,7 +2,10 @@ import { forwardRef, useImperativeHandle, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useCart } from "../cart/cart-context";
 
-const CheckoutModal = forwardRef(function CheckoutModal({ title }, ref) {
+const CheckoutModal = forwardRef(function CheckoutModal(
+  { title, onOrderSuccess },
+  ref
+) {
   const dialog = useRef();
   const { cartItems, totalPrice } = useCart();
 
@@ -33,7 +36,6 @@ const CheckoutModal = forwardRef(function CheckoutModal({ title }, ref) {
         date: new Date().toISOString(),
       },
     };
-    
 
     try {
       const response = await fetch("http://localhost:3000/orders", {
@@ -53,6 +55,7 @@ const CheckoutModal = forwardRef(function CheckoutModal({ title }, ref) {
       const result = await response.json();
       console.log("Order submitted successfully:", result);
       dialog.current.close(); // Close the modal after submitting
+      onOrderSuccess();
     } catch (error) {
       console.error("Error submitting order:", error);
     }
