@@ -68,24 +68,24 @@ const CheckoutModal = forwardRef(function CheckoutModal(
         <p>Total Amount: ${totalPrice}</p>
         <div className="control">
           <label htmlFor="name">Full Name</label>
-          <input type="text" id="full-name" name="full-name" />
+          <input type="text" id="full-name" name="full-name" required />
         </div>
         <div className="control">
           <label htmlFor="email">E-Mail Address</label>
-          <input id="email" type="email" name="email" />
+          <input id="email" type="email" name="email" required />
         </div>
         <div className="control">
           <label htmlFor="street">Street</label>
-          <input type="text" id="street" name="street" />
+          <input type="text" id="street" name="street" required />
         </div>
         <div className="control-row">
           <div className="control">
             <label htmlFor="postal-code">Postal Code</label>
-            <input type="text" id="postal-code" name="postal-code" />
+            <input type="text" id="postal-code" name="postal-code" required />
           </div>
           <div className="control">
             <label htmlFor="city">City</label>
-            <input type="text" id="city" name="city" />
+            <input type="text" id="city" name="city" required />
           </div>
         </div>
         <p className="modal-actions">
