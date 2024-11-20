@@ -1,16 +1,25 @@
-export default function Meal({ image, title,price, description }) {
+export default function Meal({ meals, onAddToCart }) {
   return (
-    <div className="meal-item">
-      <article>
-        <img src={image} alt={title} />
-        <h3>{title}</h3>
-        <p className="meal-item-price">{price}</p>
-        <p className="meal-item-description">{description}</p>
+    <section>
+      <ul id="meals">
+        {meals.map((meal) => (
+          <li key={meal.id}>
+            <article className="meal-item">
+              <img
+                src={`http://localhost:3000/${meal.image}`}
+                alt={meal.name}
+              />
+              <h3>{meal.name}</h3>
+              <p className="meal-item-price">${meal.price}</p>
+              <p className="meal-item-description">{meal.description}</p>
 
-        <p className="meal-item-actions">
-          <button>Add to cart</button>
-        </p>
-      </article>
-    </div>
+              <p className="meal-item-actions">
+                <button onClick={() => onAddToCart(meal)}>Add to cart</button>
+              </p>
+            </article>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
